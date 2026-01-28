@@ -37,13 +37,13 @@ Route::middleware(['auth', 'not.blocked'])->group(function () {
 });
 
 // Voting Routes (requires auth, password changed, not blocked, voting open)
-Route::middleware(['auth', 'not.blocked', 'password.changed', 'voting.open'])->group(function () {
+Route::middleware(['auth', 'not.blocked', 'password.changed', 'voting.open', 'no.cache'])->group(function () {
     Route::get('/vote', [VoteController::class, 'index'])->name('vote');
     Route::post('/vote', [VoteController::class, 'store'])->name('vote.store');
 });
 
 // Vote Confirmation (doesn't require voting.open - user already voted)
-Route::middleware(['auth', 'not.blocked', 'password.changed'])->group(function () {
+Route::middleware(['auth', 'not.blocked', 'password.changed', 'no.cache'])->group(function () {
     Route::get('/vote/confirmation', [VoteController::class, 'confirmation'])->name('vote.confirmation');
 });
 
