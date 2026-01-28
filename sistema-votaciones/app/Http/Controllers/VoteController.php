@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Candidate;
+use App\Models\User;
 use App\Models\Vote;
 use App\Models\VotingSetting;
 use App\Models\ActivityLog;
@@ -47,17 +48,32 @@ class VoteController extends Controller
         }
         try {
             DB::transaction(function () use ($user, $candidate) {
+                // Bloqueo pesimista: evita que dos requests simultáneos pasen el check
+                $lockedUser = User::lockForUpdate()->find($user->id);
+
+                if ($lockedUser->has_voted) {
+                    throw new \RuntimeException('ALREADY_VOTED');
+                }
+
                 Vote::create([
                     'candidate_id' => $candidate->id,
                     'voted_at' => now(),
                     'created_at' => now(),
                 ]);
-                $candidate->incrementVotes();
-                $user->recordVote();
+
+                $candidate->increment('votes_count');
+
+                $lockedUser->has_voted = true;
+                $lockedUser->voted_at = now();
+                $lockedUser->save();
             });
+
+            // Regenerar session para invalidar tokens anteriores
+            $request->session()->regenerate();
+
             ActivityLog::log('vote_cast', "Voto emitido exitosamente", $user->cedula);
 
-            // Broadcast en try separado para no afectar el voto si Pusher falla
+           
             try {
                 broadcast(new VoteCast())->toOthers();
             } catch (\Exception $e) {
@@ -65,9 +81,15 @@ class VoteController extends Controller
             }
 
             return redirect()->route('vote.confirmation');
+        } catch (\RuntimeException $e) {
+            if ($e->getMessage() === 'ALREADY_VOTED') {
+                return redirect()->route('vote')->with('error', 'Usted ya emitio su voto.');
+            }
+            \Log::error('Error al procesar voto: ' . $e->getMessage() . ' | File: ' . $e->getFile() . ':' . $e->getLine());
+            return redirect()->route('vote')->with('error', 'Error al procesar el voto. Intente de nuevo.');
         } catch (\Exception $e) {
             \Log::error('Error al procesar voto: ' . $e->getMessage() . ' | File: ' . $e->getFile() . ':' . $e->getLine());
-            return redirect()->route('vote')->with('error', 'Error al procesar el voto. Intente de nuevo. [' . class_basename($e) . ']');
+            return redirect()->route('vote')->with('error', 'Error al procesar el voto. Intente de nuevo.');
         }
     }
 

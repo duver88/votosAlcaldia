@@ -119,6 +119,32 @@ class VoterController extends Controller
         return view('admin.voters.import');
     }
 
+    public function show(User $voter)
+    {
+        $logs = ActivityLog::where('user_cedula', $voter->cedula)
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->map(function ($log) {
+                return [
+                    'action' => $log->action,
+                    'description' => $log->description,
+                    'ip' => $log->ip_address,
+                    'date' => $log->created_at->format('d/m/Y H:i:s'),
+                ];
+            });
+
+        return response()->json([
+            'cedula' => $voter->cedula,
+            'login_at' => $voter->login_at?->format('d/m/Y H:i:s'),
+            'voted_at' => $voter->voted_at?->format('d/m/Y H:i:s'),
+            'is_blocked' => $voter->is_blocked,
+            'has_voted' => $voter->has_voted,
+            'must_change_password' => $voter->must_change_password,
+            'failed_attempts' => $voter->failed_attempts,
+            'logs' => $logs,
+        ]);
+    }
+
     public function destroy(User $voter)
     {
         if ($voter->has_voted) {

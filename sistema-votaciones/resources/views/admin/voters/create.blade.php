@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 @section('content')
 <div class="max-w-2xl">
-    <h1 class="text-3xl font-bold text-gray-800 mb-6">Agregar Votante</h1>
+    <h1 class="text-2xl sm:text-3xl font-bold text-primary-700 mb-4 sm:mb-6">Agregar Votante</h1>
     <div class="card">
         <form action="{{ route('admin.voters.store') }}" method="POST" class="space-y-6">
             @csrf
@@ -11,7 +11,7 @@
                     maxlength="20" pattern="[0-9]+" title="La cedula solo debe contener numeros"
                     class="input-field @error('cedula') border-red-500 @enderror">
                 @error('cedula')
-                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                <p class="text-sm mt-1" style="color: #C20E1A;">{{ $message }}</p>
                 @enderror
             </div>
             <div>
@@ -21,7 +21,7 @@
                     class="input-field @error('password') border-red-500 @enderror">
                 <p class="text-sm text-gray-500 mt-1">El votante debera cambiar esta contrasena en su primer inicio de sesion.</p>
                 @error('password')
-                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                <p class="text-sm mt-1" style="color: #C20E1A;">{{ $message }}</p>
                 @enderror
             </div>
             <div class="flex gap-4">

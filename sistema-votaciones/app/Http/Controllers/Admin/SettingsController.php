@@ -7,12 +7,21 @@ use App\Models\VotingSetting;
 use App\Models\ActivityLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class SettingsController extends Controller
 {
     public function index()
     {
         $settings = VotingSetting::current() ?? new VotingSetting();
+
+        // Auto-cerrar si las fechas expiraron
+        if ($settings->exists && $settings->is_active && $settings->shouldAutoClose()) {
+            $settings->is_active = false;
+            $settings->save();
+            ActivityLog::log('voting_toggled', 'Votacion cerrada automaticamente (fecha de cierre alcanzada)', null, Auth::guard('admin')->id());
+        }
+
         return view('admin.settings', compact('settings'));
     }
 
@@ -39,6 +48,24 @@ class SettingsController extends Controller
         if (!$settings) {
             $settings = VotingSetting::create(['is_active' => false]);
         }
+
+        // Si va a abrir, validar que tenga fechas válidas
+        if (!$settings->is_active) {
+            $now = Carbon::now();
+
+            if (!$settings->start_datetime || !$settings->end_datetime) {
+                return back()->with('error', 'Debe configurar la fecha de apertura y cierre antes de abrir la votacion.');
+            }
+
+            if ($settings->end_datetime->lte($now)) {
+                return back()->with('error', 'La fecha de cierre ya paso. Actualice las fechas antes de abrir la votacion.');
+            }
+
+            if ($settings->start_datetime->gte($settings->end_datetime)) {
+                return back()->with('error', 'La fecha de apertura debe ser anterior a la fecha de cierre.');
+            }
+        }
+
         $settings->is_active = !$settings->is_active;
         $settings->save();
         $status = $settings->is_active ? 'abierta' : 'cerrada';

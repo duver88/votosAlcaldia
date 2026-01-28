@@ -18,6 +18,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'not.blocked' => \App\Http\Middleware\EnsureNotBlocked::class,
             'admin' => \App\Http\Middleware\AdminMiddleware::class,
             'no.cache' => \App\Http\Middleware\NoCacheHeaders::class,
+            'secure.vote' => \App\Http\Middleware\SecureVote::class,
         ]);
         $middleware->throttleApi('60,1');
     })

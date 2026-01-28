@@ -1,19 +1,19 @@
 @extends('layouts.admin')
 @section('content')
 <div class="max-w-2xl">
-    <h1 class="text-3xl font-bold text-gray-800 mb-6">Configuracion de Votacion</h1>
+    <h1 class="text-2xl sm:text-3xl font-bold text-primary-700 mb-4 sm:mb-6">Configuracion de Votacion</h1>
     <div class="card mb-6">
         <h2 class="text-xl font-semibold mb-4">Estado Actual</h2>
-        <div class="flex items-center justify-between">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div>
                 @if($settings->is_active)
-                <span class="inline-flex items-center px-4 py-2 bg-green-100 text-green-800 rounded-full font-bold">
-                    <span class="w-3 h-3 bg-green-500 rounded-full mr-2 animate-pulse"></span>
+                <span class="inline-flex items-center px-4 py-2 bg-primary-100 text-primary-800 rounded-full font-bold">
+                    <span class="w-3 h-3 bg-primary-500 rounded-full mr-2 animate-pulse"></span>
                     VOTACION ABIERTA
                 </span>
                 @else
-                <span class="inline-flex items-center px-4 py-2 bg-red-100 text-red-800 rounded-full font-bold">
-                    <span class="w-3 h-3 bg-red-500 rounded-full mr-2"></span>
+                <span class="inline-flex items-center px-4 py-2 rounded-full font-bold" style="background-color: #fde8e8; color: #C20E1A;">
+                    <span class="w-3 h-3 rounded-full mr-2" style="background-color: #C20E1A;"></span>
                     VOTACION CERRADA
                 </span>
                 @endif
@@ -38,7 +38,7 @@
                     value="{{ $settings->start_datetime?->format('Y-m-d\TH:i') }}"
                     class="input-field @error('start_datetime') border-red-500 @enderror">
                 @error('start_datetime')
-                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                <p class="text-sm mt-1" style="color: #C20E1A;">{{ $message }}</p>
                 @enderror
             </div>
             <div>
@@ -47,12 +47,12 @@
                     value="{{ $settings->end_datetime?->format('Y-m-d\TH:i') }}"
                     class="input-field @error('end_datetime') border-red-500 @enderror">
                 @error('end_datetime')
-                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                <p class="text-sm mt-1" style="color: #C20E1A;">{{ $message }}</p>
                 @enderror
             </div>
             <div class="bg-gray-50 p-4 rounded-lg">
                 <p class="text-sm text-gray-600">
-                    La votacion se abrira/cerrara automaticamente segun las fechas configuradas, siempre que se haya ejecutado el comando de verificacion programado.
+                    La votacion se cerrara automaticamente cuando se alcance la fecha de cierre. Para abrir la votacion, las fechas deben estar configuradas y la fecha de cierre no debe haber pasado.
                 </p>
             </div>
             <button type="submit" class="btn-primary">

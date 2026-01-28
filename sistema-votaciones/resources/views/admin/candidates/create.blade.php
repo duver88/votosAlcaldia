@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 @section('content')
 <div class="max-w-2xl">
-    <h1 class="text-3xl font-bold text-gray-800 mb-6">Agregar Candidato</h1>
+    <h1 class="text-2xl sm:text-3xl font-bold text-primary-700 mb-4 sm:mb-6">Agregar Candidato</h1>
     <div class="card">
         <form action="{{ route('admin.candidates.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
             @csrf
@@ -10,7 +10,7 @@
                 <input type="text" name="name" id="name" value="{{ old('name') }}" required maxlength="255"
                     class="input-field @error('name') border-red-500 @enderror">
                 @error('name')
-                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                <p class="text-sm mt-1" style="color: #C20E1A;">{{ $message }}</p>
                 @enderror
             </div>
             <div>
@@ -18,7 +18,7 @@
                 <input type="file" name="photo" id="photo" accept="image/jpeg,image/png,image/jpg,image/gif"
                     class="w-full border border-gray-300 rounded-lg p-2 @error('photo') border-red-500 @enderror">
                 @error('photo')
-                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                <p class="text-sm mt-1" style="color: #C20E1A;">{{ $message }}</p>
                 @enderror
             </div>
             <div class="flex gap-4">

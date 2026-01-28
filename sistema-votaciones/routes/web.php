@@ -39,7 +39,7 @@ Route::middleware(['auth', 'not.blocked'])->group(function () {
 // Voting Routes (requires auth, password changed, not blocked, voting open)
 Route::middleware(['auth', 'not.blocked', 'password.changed', 'voting.open', 'no.cache'])->group(function () {
     Route::get('/vote', [VoteController::class, 'index'])->name('vote');
-    Route::post('/vote', [VoteController::class, 'store'])->name('vote.store');
+    Route::post('/vote', [VoteController::class, 'store'])->name('vote.store')->middleware(['throttle:3,1', 'secure.vote']);
 });
 
 // Vote Confirmation (doesn't require voting.open - user already voted)
@@ -70,6 +70,7 @@ Route::prefix('admin')->middleware('admin')->group(function () {
     Route::get('/voters', [VoterController::class, 'index'])->name('admin.voters.index');
     Route::get('/voters/create', [VoterController::class, 'create'])->name('admin.voters.create');
     Route::post('/voters', [VoterController::class, 'store'])->name('admin.voters.store');
+    Route::get('/voters/{voter}/detail', [VoterController::class, 'show'])->name('admin.voters.show');
     Route::delete('/voters/{voter}', [VoterController::class, 'destroy'])->name('admin.voters.destroy');
     Route::post('/voters/{voter}/unblock', [VoterController::class, 'unblock'])->name('admin.voters.unblock');
     Route::post('/voters/{voter}/reset-password', [VoterController::class, 'resetPassword'])->name('admin.voters.reset-password');

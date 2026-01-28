@@ -2,8 +2,8 @@
 @section('content')
 <div class="max-w-md mx-auto">
     <div class="card">
-        <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Cambiar Contrasena</h2>
-        <div class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded mb-6">
+        <h2 class="text-2xl font-bold text-primary-700 mb-6 text-center">Cambiar Contrasena</h2>
+        <div class="border px-4 py-3 rounded mb-6" style="background-color: #fef9c3; border-color: #f8dc0b; color: #92400e;">
             <p class="font-semibold">Debe cambiar su contrasena antes de continuar.</p>
         </div>
         <div class="bg-gray-50 p-4 rounded-lg mb-6">
@@ -23,7 +23,7 @@
                     title="Minimo 8 caracteres, al menos una mayuscula, una minuscula y un numero"
                     class="input-field @error('password') border-red-500 @enderror">
                 @error('password')
-                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                <p class="text-sm mt-1" style="color: #C20E1A;">{{ $message }}</p>
                 @enderror
             </div>
             <div>
