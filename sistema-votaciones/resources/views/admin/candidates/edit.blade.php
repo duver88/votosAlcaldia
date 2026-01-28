@@ -8,7 +8,7 @@
             @method('PUT')
             <div>
                 <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
-                <input type="text" name="name" id="name" value="{{ old('name', $candidate->name) }}" required
+                <input type="text" name="name" id="name" value="{{ old('name', $candidate->name) }}" required maxlength="255"
                     class="input-field @error('name') border-red-500 @enderror">
                 @error('name')
                 <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
@@ -21,7 +21,7 @@
                     <img src="{{ Storage::url($candidate->photo) }}" alt="{{ $candidate->name }}" class="w-24 h-24 rounded-full object-cover">
                 </div>
                 @endif
-                <input type="file" name="photo" id="photo" accept="image/*"
+                <input type="file" name="photo" id="photo" accept="image/jpeg,image/png,image/jpg,image/gif"
                     class="w-full border border-gray-300 rounded-lg p-2 @error('photo') border-red-500 @enderror">
                 <p class="text-sm text-gray-500 mt-1">Dejar vacio para mantener la foto actual</p>
                 @error('photo')

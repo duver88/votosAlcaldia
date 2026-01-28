@@ -19,6 +19,8 @@
             <div>
                 <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Nueva Contrasena</label>
                 <input type="password" name="password" id="password" required
+                    minlength="8" pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}"
+                    title="Minimo 8 caracteres, al menos una mayuscula, una minuscula y un numero"
                     class="input-field @error('password') border-red-500 @enderror">
                 @error('password')
                 <p class="text-red-500 text-sm mt-1">{{ $message }}</p>

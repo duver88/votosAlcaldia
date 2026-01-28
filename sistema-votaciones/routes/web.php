@@ -10,8 +10,16 @@ use App\Http\Controllers\Admin\VoterController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\LogController;
 
-// Redirect root to login
-Route::get('/', fn() => redirect()->route('login'));
+// Redirect root based on authentication status
+Route::get('/', function () {
+    if (auth()->guard('admin')->check()) {
+        return redirect()->route('admin.dashboard');
+    }
+    if (auth()->check()) {
+        return redirect()->route('vote');
+    }
+    return redirect()->route('login');
+});
 
 // Unified Login (voters and admins)
 Route::middleware('guest')->group(function () {
@@ -46,8 +54,8 @@ Route::prefix('admin')->middleware('admin')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
     Route::get('/dashboard/stats', [DashboardController::class, 'getStats'])->name('admin.dashboard.stats');
 
-    // Candidates
-    Route::resource('candidates', CandidateController::class)->names([
+    // Candidates (excluir show ya que no se usa)
+    Route::resource('candidates', CandidateController::class)->except(['show'])->names([
         'index' => 'admin.candidates.index',
         'create' => 'admin.candidates.create',
         'store' => 'admin.candidates.store',

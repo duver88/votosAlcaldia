@@ -27,10 +27,8 @@ class CandidateController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'is_blank_vote' => 'boolean',
         ]);
-        $data = $request->only(['name', 'is_blank_vote']);
-        $data['is_blank_vote'] = $request->boolean('is_blank_vote');
+        $data = ['name' => $request->name];
         $data['position'] = Candidate::max('position') + 1;
         if ($request->hasFile('photo')) {
             $data['photo'] = $request->file('photo')->store('candidates', 'public');
@@ -50,10 +48,8 @@ class CandidateController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'is_blank_vote' => 'boolean',
         ]);
-        $data = $request->only(['name']);
-        $data['is_blank_vote'] = $request->boolean('is_blank_vote');
+        $data = ['name' => $request->name];
         if ($request->hasFile('photo')) {
             if ($candidate->photo) {
                 Storage::disk('public')->delete($candidate->photo);
