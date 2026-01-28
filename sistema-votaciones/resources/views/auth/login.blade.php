@@ -43,8 +43,7 @@
             </button>
         </form>
         <div class="mt-6 text-center text-sm text-gray-500">
-            <p>Votantes: ingrese su numero de cedula</p>
-            <p>Administradores: ingrese su email</p>
+            <p>Ingrese su numero de cedula</p>
         </div>
     </div>
 </body>
