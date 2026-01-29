@@ -1,0 +1,35 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: votosalcaldia_app
+    container_name: votosalcaldia_app
+    # restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - votaciones_assets:/var/www/html/public/build
+    #   - ./storage:/var/www/html/storage:delegated
+    #   - ./node_modules:/var/www/html/node_modules:delegated
+    env_file:
+      - .env
+    entrypoint: ["/bin/sh", "-c", "/docker/entrypoint.sh"]
+    expose:
+      - "9000"
+    # ports:
+    #   - "8080:80"
+
+  nginx:
+    image: nginx:alpine
+    container_name: votosalcaldia_nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - votaciones_assets:/var/www/html/public/build
+      # - .:/var/www/html:ro
+      - ./docker/nginx.conf:/etc/nginx/conf.d/default.conf:ro  # Crea este archivo
+    depends_on:
+      - app
+
+volumes:
+  votaciones_assets:
