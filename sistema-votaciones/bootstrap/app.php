@@ -17,6 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'voting.open' => \App\Http\Middleware\EnsureVotingOpen::class,
             'not.blocked' => \App\Http\Middleware\EnsureNotBlocked::class,
             'admin' => \App\Http\Middleware\AdminMiddleware::class,
+            'admin.only' => \App\Http\Middleware\AdminOnly::class,
             'no.cache' => \App\Http\Middleware\NoCacheHeaders::class,
             'secure.vote' => \App\Http\Middleware\SecureVote::class,
         ]);

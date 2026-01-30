@@ -9,6 +9,8 @@ use App\Http\Controllers\Admin\CandidateController;
 use App\Http\Controllers\Admin\VoterController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\LogController;
+use App\Http\Controllers\Admin\ReportController;
+use App\Http\Controllers\Admin\ModeratorController;
 
 // Redirect root based on authentication status
 Route::get('/', function () {
@@ -54,34 +56,51 @@ Route::prefix('admin')->middleware('admin')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
     Route::get('/dashboard/stats', [DashboardController::class, 'getStats'])->name('admin.dashboard.stats');
 
-    // Candidates (excluir show ya que no se usa)
-    Route::resource('candidates', CandidateController::class)->except(['show'])->names([
-        'index' => 'admin.candidates.index',
-        'create' => 'admin.candidates.create',
-        'store' => 'admin.candidates.store',
-        'edit' => 'admin.candidates.edit',
-        'update' => 'admin.candidates.update',
-        'destroy' => 'admin.candidates.destroy',
-    ]);
-    Route::post('/candidates/{candidate}/toggle', [CandidateController::class, 'toggleActive'])->name('admin.candidates.toggle');
-    Route::post('/candidates/order', [CandidateController::class, 'updateOrder'])->name('admin.candidates.order');
-
-    // Voters
+    // Voters (lectura para todos, escritura solo admin)
     Route::get('/voters', [VoterController::class, 'index'])->name('admin.voters.index');
-    Route::get('/voters/create', [VoterController::class, 'create'])->name('admin.voters.create');
-    Route::post('/voters', [VoterController::class, 'store'])->name('admin.voters.store');
     Route::get('/voters/{voter}/detail', [VoterController::class, 'show'])->name('admin.voters.show');
-    Route::delete('/voters/{voter}', [VoterController::class, 'destroy'])->name('admin.voters.destroy');
-    Route::post('/voters/{voter}/unblock', [VoterController::class, 'unblock'])->name('admin.voters.unblock');
-    Route::post('/voters/{voter}/reset-password', [VoterController::class, 'resetPassword'])->name('admin.voters.reset-password');
-    Route::get('/voters/import', [VoterController::class, 'showImport'])->name('admin.voters.import');
-    Route::post('/voters/import', [VoterController::class, 'import'])->name('admin.voters.import.process');
 
-    // Settings
-    Route::get('/settings', [SettingsController::class, 'index'])->name('admin.settings');
-    Route::post('/settings', [SettingsController::class, 'update'])->name('admin.settings.update');
-    Route::post('/settings/toggle', [SettingsController::class, 'toggleVoting'])->name('admin.settings.toggle');
+    // Report (visible para admin y moderador)
+    Route::get('/report', [ReportController::class, 'index'])->name('admin.report');
 
-    // Logs
+    // Logs (visible para admin y moderador)
     Route::get('/logs', [LogController::class, 'index'])->name('admin.logs');
+
+    // === RUTAS SOLO PARA ADMIN (no moderadores) ===
+    Route::middleware('admin.only')->group(function () {
+        // Candidates
+        Route::resource('candidates', CandidateController::class)->except(['show'])->names([
+            'index' => 'admin.candidates.index',
+            'create' => 'admin.candidates.create',
+            'store' => 'admin.candidates.store',
+            'edit' => 'admin.candidates.edit',
+            'update' => 'admin.candidates.update',
+            'destroy' => 'admin.candidates.destroy',
+        ]);
+        Route::post('/candidates/{candidate}/toggle', [CandidateController::class, 'toggleActive'])->name('admin.candidates.toggle');
+        Route::post('/candidates/order', [CandidateController::class, 'updateOrder'])->name('admin.candidates.order');
+
+        // Voters (escritura)
+        Route::get('/voters/create', [VoterController::class, 'create'])->name('admin.voters.create');
+        Route::post('/voters', [VoterController::class, 'store'])->name('admin.voters.store');
+        Route::delete('/voters/{voter}', [VoterController::class, 'destroy'])->name('admin.voters.destroy');
+        Route::post('/voters/{voter}/unblock', [VoterController::class, 'unblock'])->name('admin.voters.unblock');
+        Route::post('/voters/{voter}/reset-password', [VoterController::class, 'resetPassword'])->name('admin.voters.reset-password');
+        Route::get('/voters/import', [VoterController::class, 'showImport'])->name('admin.voters.import');
+        Route::post('/voters/import', [VoterController::class, 'import'])->name('admin.voters.import.process');
+
+        // Settings
+        Route::get('/settings', [SettingsController::class, 'index'])->name('admin.settings');
+        Route::post('/settings', [SettingsController::class, 'update'])->name('admin.settings.update');
+        Route::post('/settings/toggle', [SettingsController::class, 'toggleVoting'])->name('admin.settings.toggle');
+        Route::get('/settings/export-backup', [SettingsController::class, 'exportBackup'])->name('admin.settings.export-backup');
+        Route::post('/settings/reset', [SettingsController::class, 'reset'])->name('admin.settings.reset');
+
+        // Moderators
+        Route::get('/moderators', [ModeratorController::class, 'index'])->name('admin.moderators.index');
+        Route::get('/moderators/create', [ModeratorController::class, 'create'])->name('admin.moderators.create');
+        Route::post('/moderators', [ModeratorController::class, 'store'])->name('admin.moderators.store');
+        Route::delete('/moderators/{moderator}', [ModeratorController::class, 'destroy'])->name('admin.moderators.destroy');
+        Route::post('/moderators/{moderator}/reset-password', [ModeratorController::class, 'resetPassword'])->name('admin.moderators.reset-password');
+    });
 });

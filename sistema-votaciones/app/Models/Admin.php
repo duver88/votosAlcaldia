@@ -14,6 +14,7 @@ class Admin extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
     ];
 
     protected $hidden = [
@@ -30,5 +31,16 @@ class Admin extends Authenticatable
     public function activityLogs(): HasMany
     {
         return $this->hasMany(ActivityLog::class);
+    }
+
+    public function isAdmin(): bool
+    {
+        // null = admin existente antes de la migracion de roles
+        return $this->role === 'admin' || $this->role === null;
+    }
+
+    public function isModerator(): bool
+    {
+        return $this->role === 'moderator';
     }
 }
