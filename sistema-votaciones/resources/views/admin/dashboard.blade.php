@@ -44,14 +44,10 @@
                     <p class="text-xs text-gray-400 uppercase tracking-wider">Cierre</p>
                     <p class="font-bold text-xs sm:text-sm text-gray-700">{{ $settings?->end_datetime?->format('d/m/Y H:i') ?? 'No configurado' }}</p>
                 </div>
-                <form action="{{ route('admin.settings.toggle') }}" method="POST" class="ml-auto sm:ml-0">
-                    @csrf
-                    @if($settings && $settings->is_active)
-                    <button type="submit" class="btn-danger text-xs sm:text-sm px-4 sm:px-5 py-2">Cerrar Votacion</button>
-                    @else
-                    <button type="submit" class="btn-primary text-xs sm:text-sm px-4 sm:px-5 py-2">Abrir Votacion</button>
-                    @endif
-                </form>
+                <a href="{{ route('admin.settings') }}" class="btn-secondary text-xs sm:text-sm px-4 sm:px-5 py-2 ml-auto sm:ml-0 flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    Configurar
+                </a>
             </div>
         </div>
     </div>
@@ -91,7 +87,7 @@
             <div class="absolute top-0 right-0 w-24 h-24 rounded-full opacity-5" style="background-color: #f8dc0b; transform: translate(30%, -30%);"></div>
             <div class="flex items-start justify-between">
                 <div>
-                    <p class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Abstinencia</p>
+                    <p class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Abstención</p>
                     <p class="text-2xl sm:text-4xl font-bold" style="color: #92400e;" x-text="stats.pendingVoters">{{ $pendingVoters }}</p>
                     <p class="text-xs text-gray-400 mt-1">No han ejercido su voto</p>
                 </div>
@@ -209,7 +205,7 @@
                 <div class="w-px bg-gray-100"></div>
                 <div class="text-center">
                     <p class="text-xl font-bold" style="color: #d97706;" x-text="stats.pendingVoters"></p>
-                    <p class="text-xs text-gray-400">Abstinencia</p>
+                    <p class="text-xs text-gray-400">Abstención</p>
                 </div>
             </div>
         </div>
@@ -501,6 +497,9 @@ function dashboardData() {
                     responsive: true,
                     maintainAspectRatio: false,
                     animation: { duration: 600, easing: 'easeOutQuart' },
+                    layout: {
+                        padding: { top: 25 }
+                    },
                     scales: {
                         y: {
                             beginAtZero: true,

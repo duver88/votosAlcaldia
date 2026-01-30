@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar Sesion - {{ config('app.name') }}</title>
+    <link rel="icon" type="image/png" href="https://www.bucaramanga.gov.co/wp-content/uploads/2025/06/escudo-alcaldia.png">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-gradient-to-br from-primary-700 via-primary-500 to-primary-300 min-h-screen flex items-center justify-center p-4">
