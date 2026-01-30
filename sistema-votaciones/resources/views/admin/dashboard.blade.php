@@ -615,7 +615,7 @@ function dashboardData() {
                             grid: { color: '#f9fafb', drawBorder: false }
                         },
                         y: {
-                            ticks: { font: { family: 'Oswald', size: 14, weight: '500' }, color: '#374151' },
+                            ticks: { font: { family: 'Oswald', size: 14, weight: '500' }, color: '#374151' }, 
                             grid: { display: false }
                         }
                     },
