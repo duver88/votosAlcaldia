@@ -26,7 +26,7 @@ class CandidateController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:20480',
         ]);
         $data = ['name' => $request->name];
         $data['position'] = Candidate::max('position') + 1;
@@ -47,7 +47,7 @@ class CandidateController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:20480',
         ]);
         $data = ['name' => $request->name];
         if ($request->hasFile('photo')) {

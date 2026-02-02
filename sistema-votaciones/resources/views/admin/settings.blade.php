@@ -1,7 +1,14 @@
 @extends('layouts.admin')
 @section('content')
-<div class="max-w-2xl" x-data="{ showResetModal: false, showDangerZone: false }">
-    <h1 class="text-2xl sm:text-3xl font-bold text-primary-700 mb-4 sm:mb-6">Configuracion de Votacion</h1>
+<div class="max-w-2xl" x-data="settingsPage()" x-init="init()">
+    <div class="flex items-center justify-between mb-4 sm:mb-6">
+        <h1 class="text-2xl sm:text-3xl font-bold text-primary-700">Configuracion de Votacion</h1>
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 px-4 py-2 text-center">
+            <p class="text-xs text-gray-400 uppercase tracking-wider">Hora Colombia</p>
+            <p class="text-xl font-bold text-primary-700" x-text="currentColombiaTime"></p>
+            <p class="text-xs text-gray-500" x-text="currentColombiaDate"></p>
+        </div>
+    </div>
     <div class="card mb-6">
         <h2 class="text-xl font-semibold mb-4">Estado Actual</h2>
         <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
@@ -26,6 +33,13 @@
                 <button type="submit" class="btn-primary">Abrir Votacion</button>
                 @endif
             </form>
+        </div>
+
+        <!-- Countdown Timer -->
+        <div x-show="countdown" class="mt-4 p-4 rounded-lg" :class="countdownType === 'open' ? 'bg-primary-50 border border-primary-200' : 'bg-amber-50 border border-amber-200'">
+            <p class="text-sm font-medium" :class="countdownType === 'open' ? 'text-primary-700' : 'text-amber-700'">
+                <span x-text="countdownLabel"></span>: <span x-text="countdown" class="font-bold"></span>
+            </p>
         </div>
     </div>
     <div class="card mb-6">
@@ -52,7 +66,7 @@
             </div>
             <div class="bg-gray-50 p-4 rounded-lg">
                 <p class="text-sm text-gray-600">
-                    La votacion se cerrara automaticamente cuando se alcance la fecha de cierre. Para abrir la votacion, las fechas deben estar configuradas y la fecha de cierre no debe haber pasado.
+                    La votacion se abrira y cerrara automaticamente segun las fechas programadas. La pagina se actualizara automaticamente cuando cambie el estado.
                 </p>
             </div>
             <button type="submit" class="btn-primary">
@@ -206,4 +220,115 @@
         </div>
     </div>
 </div>
+
+@push('scripts')
+<script>
+function settingsPage() {
+    return {
+        showResetModal: false,
+        showDangerZone: false,
+        countdown: null,
+        countdownLabel: '',
+        countdownType: '',
+        currentColombiaTime: '',
+        currentColombiaDate: '',
+        // Timestamps de las fechas (ya en hora Colombia desde el servidor)
+        startTime: @json($settings->start_datetime?->timestamp),
+        endTime: @json($settings->end_datetime?->timestamp),
+        isActive: @json($settings->is_active),
+
+        init() {
+            this.updateColombiaTime();
+            this.updateCountdown();
+            setInterval(() => {
+                this.updateColombiaTime();
+                this.updateCountdown();
+            }, 1000);
+        },
+
+        // Obtener hora de Colombia usando Intl API
+        getColombiaTime() {
+            return new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Bogota' }));
+        },
+
+        getColombiaTimestamp() {
+            return Math.floor(this.getColombiaTime().getTime() / 1000);
+        },
+
+        updateColombiaTime() {
+            const now = this.getColombiaTime();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const mins = String(now.getMinutes()).padStart(2, '0');
+            const secs = String(now.getSeconds()).padStart(2, '0');
+            this.currentColombiaTime = `${hours}:${mins}:${secs}`;
+
+            const days = ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'];
+            const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+            this.currentColombiaDate = `${days[now.getDay()]} ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+        },
+
+        updateCountdown() {
+            const now = this.getColombiaTimestamp();
+
+            // Si esta cerrada y hay fecha de apertura en el futuro
+            if (!this.isActive && this.startTime && this.startTime > now) {
+                this.countdownType = 'open';
+                this.countdownLabel = 'Se abrira en';
+                this.countdown = this.formatTime(this.startTime - now);
+
+                // Auto-refresh cuando llegue la hora
+                if (this.startTime - now <= 1) {
+                    setTimeout(() => location.reload(), 1500);
+                }
+                return;
+            }
+
+            // Si esta abierta y hay fecha de cierre en el futuro
+            if (this.isActive && this.endTime && this.endTime > now) {
+                this.countdownType = 'close';
+                this.countdownLabel = 'Se cerrara en';
+                this.countdown = this.formatTime(this.endTime - now);
+
+                // Auto-refresh cuando llegue la hora
+                if (this.endTime - now <= 1) {
+                    setTimeout(() => location.reload(), 1500);
+                }
+                return;
+            }
+
+            // Si esta cerrada pero deberia estar abierta (apertura paso, cierre no)
+            if (!this.isActive && this.startTime && this.startTime <= now && (!this.endTime || this.endTime > now)) {
+                location.reload();
+                return;
+            }
+
+            // Si esta abierta pero deberia estar cerrada
+            if (this.isActive && this.endTime && this.endTime <= now) {
+                location.reload();
+                return;
+            }
+
+            this.countdown = null;
+        },
+
+        formatTime(seconds) {
+            if (seconds < 0) return '0s';
+
+            const days = Math.floor(seconds / 86400);
+            const hours = Math.floor((seconds % 86400) / 3600);
+            const mins = Math.floor((seconds % 3600) / 60);
+            const secs = seconds % 60;
+
+            let parts = [];
+            if (days > 0) parts.push(days + 'd');
+            if (hours > 0) parts.push(hours + 'h');
+            if (mins > 0) parts.push(mins + 'm');
+            parts.push(secs + 's');
+
+            return parts.join(' ');
+        }
+    }
+}
+</script>
+@endpush
 @endsection

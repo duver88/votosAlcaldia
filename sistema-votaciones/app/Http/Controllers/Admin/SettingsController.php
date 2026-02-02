@@ -21,6 +21,19 @@ class SettingsController extends Controller
     {
         $settings = VotingSetting::current() ?? new VotingSetting();
 
+        // Hora de Colombia
+        $colombiaTime = Carbon::now('America/Bogota');
+
+        // Auto-abrir si llego la hora de apertura
+        if ($settings->exists && !$settings->is_active && $settings->shouldAutoOpen()) {
+            // Verificar que no haya pasado la fecha de cierre
+            if (!$settings->end_datetime || $colombiaTime->lt($settings->end_datetime)) {
+                $settings->is_active = true;
+                $settings->save();
+                ActivityLog::log('voting_toggled', 'Votacion abierta automaticamente (fecha de apertura alcanzada)', null, Auth::guard('admin')->id());
+            }
+        }
+
         // Auto-cerrar si las fechas expiraron
         if ($settings->exists && $settings->is_active && $settings->shouldAutoClose()) {
             $settings->is_active = false;
