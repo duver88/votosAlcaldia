@@ -4,7 +4,13 @@ set -e
 # Composer install
 cd /var/www/html
 
-# Migrate solo si pendiente (externa)
+# Now safe
+php artisan optimize:clear
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
 php artisan migrate
 
-exec php-fpm
+php artisan storage:link
+
+exec apache2-foreground

@@ -11,13 +11,9 @@ export default defineConfig({
         tailwindcss(),
     ],
     server: {
-        watch: {
-            ignored: ['**/storage/framework/views/**'],
-        },
-        host: '0.0.0.0', 
-    port: 5173,
-    hmr: {
-      host: 'localhost',  // Navegador
+        proxy: { '/build': 'http://localhost:5173' },  // Dev proxy
+        port: 5173,
+        host: true  // Docker access
     },
-    },
+    build: { outDir: 'public/build' }  // Prod output
 });

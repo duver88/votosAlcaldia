@@ -1,1 +1,5 @@
-sistema-votaciones/resources/framework/views/
+sistema-votaciones/storage/framework/views/**
+sistema-votaciones/node_modules/**
+sistema-votaciones/resources/logs/**
+sistema-votaciones/bootstrap/cache/**
+sistema-votaciones/resources/framework/views/*.php

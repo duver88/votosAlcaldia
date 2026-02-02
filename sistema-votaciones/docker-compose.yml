@@ -5,40 +5,28 @@ services:
       dockerfile: Dockerfile
     image: votosalcaldia_app
     container_name: votosalcaldia_app
-    # restart: unless-stopped
-    working_dir: /var/www/html
-    volumes:
-      - votaciones_assets:/var/www/html/public/build
-      # - ./node_modules:/var/www/html/node_modules:delegated
-      - ./resources:/var/www/html/storage
-    env_file:
-      - .env
-    entrypoint: ["/bin/sh", "-c", "/docker/entrypoint.sh"]
-    expose:
-      - "9000"
-
-  nginx:
-    image: nginx:alpine
-    container_name: votosalcaldia_nginx
-    env_file:
-      - .env
     ports:
       - "${OUTPUT_PORT:-8091}:80"
     volumes:
-      - votaciones_assets:/var/www/html/public/build
       - .:/var/www/html
-      - ./docker/nginx.conf:/etc/nginx/conf.d/default.conf:ro  # Crea este archivo
-    depends_on:
-      - app
+      - votaciones_vendor:/var/www/html/vendor
+      - votaciones_public:/var/www/html/public
+    env_file:
+      - .env
+    entrypoint: ["/bin/sh", "-c", "/docker/entrypoint.sh"]
+    # restart: unless-stopped  # Uncomment prod
 
   node:
     image: node:20-alpine
+    container_name: votosalcaldia_node
     working_dir: /app
     volumes:
-      - .:/app:cached  # Hot reload blade + CSS/JS
+      - .:/app:cached  # Hot reload
     ports:
       - "5173:5173"
     command: sh -c "npm install && npm run dev"
+    # profiles: ["dev"]  # docker compose --profile dev up node
 
 volumes:
-  votaciones_assets:
+  votaciones_vendor:
+  votaciones_public:
