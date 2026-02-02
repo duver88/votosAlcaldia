@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push)",
+      "Bash(npm run build:*)",
+      "Bash(php artisan tinker --execute=\"\nuse App\\\\Models\\\\Vote;\nuse App\\\\Models\\\\User;\nuse App\\\\Models\\\\Candidate;\nuse Illuminate\\\\Support\\\\Facades\\\\DB;\n\nDB::transaction\\(function \\(\\) {\n    $votesDeleted = Vote::count\\(\\);\n    Vote::truncate\\(\\);\n    \n    Candidate::query\\(\\)->update\\([''votes_count'' => 0]\\);\n    \n    $usersDeleted = User::count\\(\\);\n    User::truncate\\(\\);\n    \n    echo \"\"Eliminados: {$usersDeleted} votantes, {$votesDeleted} votos. Contadores de candidatos reseteados a 0.\\\\n\"\";\n}\\);\n\")",
+      "Bash(php artisan tinker:*)",
+      "Bash(php artisan test:*)",
+      "Bash(git status:*)",
+      "Bash(php artisan:*)",
+      "Bash(git push:*)",
+      "Bash(php -r:*)"
+    ]
+  }
+}

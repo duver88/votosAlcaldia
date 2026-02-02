@@ -13,7 +13,7 @@
             <span class="font-semibold">{{ $votedAt->format('d/m/Y') }}</span> a las <span class="font-semibold">{{ $votedAt->format('H:i:s') }}</span>
         </p>
         <div class="bg-primary-50 border border-primary-200 text-primary-700 px-4 py-3 rounded mb-6">
-            Gracias por participar en el proceso electoral.
+            Gracias por participar en las elecciones de los representantes de los empleados en la comision de personal del municipio de Bucaramanga.
         </div>
         <form action="{{ route('logout') }}" method="POST">
             @csrf

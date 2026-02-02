@@ -27,12 +27,18 @@ class VotingSetting extends Model
         return self::first();
     }
 
+    // Siempre usar hora de Colombia
+    private function colombiaTime(): Carbon
+    {
+        return Carbon::now('America/Bogota');
+    }
+
     public function isVotingOpen(): bool
     {
         if (!$this->is_active) {
             return false;
         }
-        $now = Carbon::now();
+        $now = $this->colombiaTime();
         if ($this->start_datetime && $now->lt($this->start_datetime)) {
             return false;
         }
@@ -50,7 +56,7 @@ class VotingSetting extends Model
         if (!$this->start_datetime) {
             return false;
         }
-        return Carbon::now()->gte($this->start_datetime);
+        return $this->colombiaTime()->gte($this->start_datetime);
     }
 
     public function shouldAutoClose(): bool
@@ -61,6 +67,6 @@ class VotingSetting extends Model
         if (!$this->end_datetime) {
             return false;
         }
-        return Carbon::now()->gte($this->end_datetime);
+        return $this->colombiaTime()->gte($this->end_datetime);
     }
 }
