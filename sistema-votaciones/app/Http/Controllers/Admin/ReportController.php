@@ -16,7 +16,7 @@ class ReportController extends Controller
         $participation = $totalVoters > 0 ? round(($totalVotes / $totalVoters) * 100, 2) : 0;
 
         $candidates = Candidate::active()
-            ->ordered()
+            ->orderByDesc('votes_count')
             ->get()
             ->map(function ($candidate) use ($totalVotes) {
                 $candidate->percentage = $totalVotes > 0

@@ -8,6 +8,8 @@ use App\Models\ActivityLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class VoterController extends Controller
 {
@@ -71,14 +73,24 @@ class VoterController extends Controller
 
     public function import(Request $request)
     {
+        // Aumentar tiempo limite para importaciones grandes
+        set_time_limit(300); // 5 minutos
+
         $request->validate([
             'file' => 'required|file|mimes:csv,txt|max:10240',
         ]);
+
         $file = $request->file('file');
         $handle = fopen($file->getPathname(), 'r');
         $imported = 0;
         $errors = [];
         $lineNumber = 0;
+        $batch = [];
+        $batchSize = 100;
+
+        // Obtener todas las cedulas existentes para verificacion rapida
+        $existingCedulas = User::pluck('cedula')->flip()->toArray();
+
         while (($data = fgetcsv($handle, 1000, ',')) !== false) {
             $lineNumber++;
             if (count($data) < 2) {
@@ -91,17 +103,34 @@ class VoterController extends Controller
                 $errors[] = "Linea {$lineNumber}: cedula o contrasena vacia";
                 continue;
             }
-            if (User::where('cedula', $cedula)->exists()) {
+            if (isset($existingCedulas[$cedula])) {
                 $errors[] = "Linea {$lineNumber}: cedula {$cedula} ya existe";
                 continue;
             }
-            User::create([
+
+            // Agregar a batch
+            $batch[] = [
                 'cedula' => $cedula,
-                'password' => $password,
+                'password' => Hash::make($password),
                 'must_change_password' => true,
-            ]);
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+            $existingCedulas[$cedula] = true; // Marcar como existente
             $imported++;
+
+            // Insertar en lotes
+            if (count($batch) >= $batchSize) {
+                DB::table('users')->insert($batch);
+                $batch = [];
+            }
         }
+
+        // Insertar registros restantes
+        if (count($batch) > 0) {
+            DB::table('users')->insert($batch);
+        }
+
         fclose($handle);
         ActivityLog::log('voters_imported', "Votantes importados: {$imported}", null, Auth::guard('admin')->id());
         $message = "Se importaron {$imported} votantes.";
