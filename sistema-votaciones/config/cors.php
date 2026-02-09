@@ -2,15 +2,6 @@
 
 return [
 
-    /*
-    |--------------------------------------------------------------------------
-    | Cross-Origin Resource Sharing (CORS) Configuration
-    |--------------------------------------------------------------------------
-    |
-    | Configuracion restrictiva para el sistema de votaciones.
-    | Solo se permiten requests desde el mismo origen.
-    |
-    */
 
     'paths' => ['*'],
 
