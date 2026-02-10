@@ -7,12 +7,18 @@
             'admin_logout' => ['label' => 'Cierre Admin', 'bg' => 'linear-gradient(135deg, #faf5ff, #ede9fe)', 'color' => '#7c3aed', 'iconBg' => '#a78bfa', 'icon' => 'M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1'],
             'user_login', 'login' => ['label' => 'Inicio Sesion', 'bg' => 'linear-gradient(135deg, #ecfdf5, #d1fae5)', 'color' => '#065f46', 'iconBg' => '#10b981', 'icon' => 'M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1'],
             'user_logout', 'logout' => ['label' => 'Cierre Sesion', 'bg' => 'linear-gradient(135deg, #f9fafb, #f3f4f6)', 'color' => '#4b5563', 'iconBg' => '#9ca3af', 'icon' => 'M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1'],
-            'vote' => ['label' => 'Voto Emitido', 'bg' => 'linear-gradient(135deg, #eff6ff, #dbeafe)', 'color' => '#1e40af', 'iconBg' => '#3b82f6', 'icon' => 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'],
-            'login_failed' => ['label' => 'Login Fallido', 'bg' => 'linear-gradient(135deg, #fef2f2, #fde8e8)', 'color' => '#991b1b', 'iconBg' => '#ef4444', 'icon' => 'M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z'],
-            'account_blocked' => ['label' => 'Cuenta Bloqueada', 'bg' => 'linear-gradient(135deg, #fef2f2, #fde8e8)', 'color' => '#991b1b', 'iconBg' => '#dc2626', 'icon' => 'M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636'],
+            'vote_cast' => ['label' => 'Voto Emitido', 'bg' => 'linear-gradient(135deg, #eff6ff, #dbeafe)', 'color' => '#1e40af', 'iconBg' => '#3b82f6', 'icon' => 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'],
+            'user_blocked' => ['label' => 'Cuenta Bloqueada', 'bg' => 'linear-gradient(135deg, #fef2f2, #fde8e8)', 'color' => '#991b1b', 'iconBg' => '#dc2626', 'icon' => 'M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636'],
             'password_changed' => ['label' => 'Cambio Clave', 'bg' => 'linear-gradient(135deg, #fffbeb, #fef3c7)', 'color' => '#92400e', 'iconBg' => '#f59e0b', 'icon' => 'M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z'],
-            'voting_toggled' => ['label' => 'Estado Votacion', 'bg' => 'linear-gradient(135deg, #f0f9ee, #dcfce7)', 'color' => '#166534', 'iconBg' => '#43883d', 'icon' => 'M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z'],
+            'voting_toggled', 'voting_auto_open', 'voting_auto_close' => ['label' => 'Estado Votacion', 'bg' => 'linear-gradient(135deg, #f0f9ee, #dcfce7)', 'color' => '#166534', 'iconBg' => '#43883d', 'icon' => 'M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z'],
             'settings_updated' => ['label' => 'Config Actualizada', 'bg' => 'linear-gradient(135deg, #eff6ff, #dbeafe)', 'color' => '#1e40af', 'iconBg' => '#2563eb', 'icon' => 'M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z'],
+            'voter_created', 'voters_imported', 'voters_imported_cli' => ['label' => 'Votante Creado', 'bg' => 'linear-gradient(135deg, #ecfdf5, #d1fae5)', 'color' => '#065f46', 'iconBg' => '#059669', 'icon' => 'M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z'],
+            'voter_unblocked' => ['label' => 'Votante Desbloqueado', 'bg' => 'linear-gradient(135deg, #ecfdf5, #d1fae5)', 'color' => '#065f46', 'iconBg' => '#10b981', 'icon' => 'M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z'],
+            'voter_password_reset', 'moderator_password_reset' => ['label' => 'Reset Clave', 'bg' => 'linear-gradient(135deg, #fffbeb, #fef3c7)', 'color' => '#92400e', 'iconBg' => '#d97706', 'icon' => 'M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z'],
+            'voter_deleted' => ['label' => 'Votante Eliminado', 'bg' => 'linear-gradient(135deg, #fef2f2, #fde8e8)', 'color' => '#991b1b', 'iconBg' => '#ef4444', 'icon' => 'M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16'],
+            'candidate_created', 'candidate_updated', 'candidate_deleted', 'candidate_toggled' => ['label' => 'Gestion Candidato', 'bg' => 'linear-gradient(135deg, #fdf4ff, #fae8ff)', 'color' => '#86198f', 'iconBg' => '#a855f7', 'icon' => 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z'],
+            'moderator_created', 'moderator_deleted' => ['label' => 'Gestion Moderador', 'bg' => 'linear-gradient(135deg, #fff7ed, #ffedd5)', 'color' => '#9a3412', 'iconBg' => '#f97316', 'icon' => 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z'],
+            'backup_exported' => ['label' => 'Backup Exportado', 'bg' => 'linear-gradient(135deg, #f0f9ff, #e0f2fe)', 'color' => '#075985', 'iconBg' => '#0284c7', 'icon' => 'M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'],
             default => ['label' => $action, 'bg' => 'linear-gradient(135deg, #f9fafb, #f3f4f6)', 'color' => '#6b7280', 'iconBg' => '#9ca3af', 'icon' => 'M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'],
         };
     }
@@ -53,15 +59,18 @@
             <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Tipo</label>
             <select name="action" class="input-field">
                 <option value="">Todas las acciones</option>
+                <option value="vote_cast" {{ request('action') == 'vote_cast' ? 'selected' : '' }}>Voto Emitido</option>
                 <option value="user_login" {{ request('action') == 'user_login' ? 'selected' : '' }}>Inicio Sesion</option>
                 <option value="user_logout" {{ request('action') == 'user_logout' ? 'selected' : '' }}>Cierre Sesion</option>
                 <option value="admin_login" {{ request('action') == 'admin_login' ? 'selected' : '' }}>Inicio Admin</option>
                 <option value="admin_logout" {{ request('action') == 'admin_logout' ? 'selected' : '' }}>Cierre Admin</option>
-                <option value="vote" {{ request('action') == 'vote' ? 'selected' : '' }}>Voto</option>
-                <option value="login_failed" {{ request('action') == 'login_failed' ? 'selected' : '' }}>Login Fallido</option>
+                <option value="user_blocked" {{ request('action') == 'user_blocked' ? 'selected' : '' }}>Cuenta Bloqueada</option>
                 <option value="password_changed" {{ request('action') == 'password_changed' ? 'selected' : '' }}>Cambio Clave</option>
                 <option value="voting_toggled" {{ request('action') == 'voting_toggled' ? 'selected' : '' }}>Estado Votacion</option>
                 <option value="settings_updated" {{ request('action') == 'settings_updated' ? 'selected' : '' }}>Config Actualizada</option>
+                <option value="voters_imported" {{ request('action') == 'voters_imported' ? 'selected' : '' }}>Votantes Importados</option>
+                <option value="voter_created" {{ request('action') == 'voter_created' ? 'selected' : '' }}>Votante Creado</option>
+                <option value="voter_deleted" {{ request('action') == 'voter_deleted' ? 'selected' : '' }}>Votante Eliminado</option>
             </select>
         </div>
         <div class="flex gap-2">
